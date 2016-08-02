@@ -82,7 +82,7 @@ fakeExecute' sstate = do
       colInfo <- fgetcolinfo hStmt
       return (parmInfo, colInfo)
 
--- | The Stament State
+-- | The Statement State
 data SState = SState
   { sstmt        :: StmtWrapper
   , squery       :: String
@@ -185,12 +185,17 @@ fnextResultSet sstate = do
   withStmtOrDie (sstmt sstate) $ \hStmt -> do
 
      hdbcTrace "fnextResultSet: unbind last result set"
+     hdbcTrace "fnextResultSet: after sqlunbind last result set"
+     freeBoundCols sstate
+     hdbcTrace "fnextResultSet: after freeBoundCols"
+--     tm <- takeMVar (bindColsMV sstate) 
+--     hdbcTrace $ "fnextResultSet: after takeMVar " ++ show (length tm)
+{-
      withMaybeStmt (sstmt sstate) $ F.mapM_ $ \hStmt -> do
         --c_sqlFreeStmt hStmt sQL_CLOSE >>= checkError "fexecute c_sqlFreeStmt sQL_CLOSE" (StmtHandle hStmt)
         c_sqlFreeStmt hStmt sQL_UNBIND >>= checkError "fexecute c_sqlFreeStmt sQL_UNBIND" (StmtHandle hStmt)
         --c_sqlFreeStmt hStmt sQL_RESET_PARAMS >>= checkError "fexecute c_sqlFreeStmt sQL_RESET_PARAMS" (StmtHandle hStmt)
-     freeBoundCols sstate
-
+-}
      r <- sqlMoreResults hStmt
      hdbcTrace $ "fnextResultSet: sqlMoreResults r=" ++ show r 
      case r of
