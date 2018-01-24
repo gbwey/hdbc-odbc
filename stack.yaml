@@ -1,3 +1,11 @@
-resolver: lts-6.2
-extra-deps:
-  - HDBC-2.4.0.1
+resolver: lts-9.5
+#extra-deps:
+#  - HDBC-2.4.0.1
+packages:
+- location: '.'
+# - location: ../double-conversion
+#   extra-dep: true
+# - location: ../hdbc-odbc-41b25fcd8aad5c7e36cf780cb77d7e5b77b7062b
+#   extra-dep: true
+- location: ../hdbc_nextresult
+  extra-dep: true

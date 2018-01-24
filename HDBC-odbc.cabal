@@ -1,5 +1,5 @@
 name:          HDBC-odbc
-version:       2.5.0.0
+version:       2.5.0.2
 cabal-version: >=1.8
 build-type:    Simple
 license:       BSD3
@@ -35,12 +35,12 @@ flag buildstresstest
 library
   exposed-modules:
       Database.HDBC.ODBC
+    , Database.HDBC.ODBC.ConnectionImpl
   other-modules:
       Database.HDBC.ODBC.Api.Errors
     , Database.HDBC.ODBC.Api.Imports
     , Database.HDBC.ODBC.Api.Types
     , Database.HDBC.ODBC.Connection
-    , Database.HDBC.ODBC.ConnectionImpl
     , Database.HDBC.ODBC.Log
     , Database.HDBC.ODBC.Statement
     , Database.HDBC.ODBC.TypeConv
