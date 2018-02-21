@@ -22,6 +22,7 @@ import Foreign.ForeignPtr
 import Foreign.Ptr
 import Data.Word
 import Data.Int
+import Data.Maybe
 import Control.Concurrent.MVar
 import Control.Monad (when, void)
 import qualified Data.ByteString as B
@@ -155,7 +156,7 @@ frun conn children query args =
     do sth <- newSth conn children query
        res <- execute sth args
        finish sth
-       return res
+       return $ fromMaybe 0 res
 
 fcommit iconn = withDbcOrDie iconn $ \cconn ->
     sqlEndTran #{const SQL_HANDLE_DBC} cconn #{const SQL_COMMIT}

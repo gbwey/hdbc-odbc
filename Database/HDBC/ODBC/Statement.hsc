@@ -148,7 +148,8 @@ fdescribetable iconn tablename = do
 
 {- For now, we try to just  handle things as simply as possible.
 FIXME lots of room for improvement here (types, etc). -}
-fexecute :: SState -> [SqlValue] -> IO Integer
+-- need to make IO Integer (Maybe Integer) ie Nothing means select type
+fexecute :: SState -> [SqlValue] -> IO (Maybe Integer)
 fexecute sstate args = do
   hdbcTrace $ "fexecute: " ++ show (squery sstate) ++ show args
   (finish, result) <- withStmtOrDie (sstmt sstate) $ \hStmt -> do
@@ -164,18 +165,19 @@ fexecute sstate args = do
     hdbcTrace $ "Ready for sqlExecute: " ++ show (squery sstate) ++ show args
     r <- sqlExecute hStmt
     mapM_ (\(x, y) -> free x >> free y) (catMaybes bindArgs)
-
+    
+    hdbcTrace $ "0 r=" ++ show r
     case r of
-      #{const SQL_NO_DATA} -> return () -- Update that did nothing
-      x -> checkError "execute execute" (StmtHandle hStmt) x
+      #{const SQL_NO_DATA} -> hdbcTrace "1a sql_no_data" >> return () -- Update that did nothing
+      x -> hdbcTrace "1b checkError" >> checkError "execute execute" (StmtHandle hStmt) x
 
     rc <- getNumResultCols hStmt
-
+    hdbcTrace ("2 getNumResultCols hStmt rc=" ++ show rc)
     case rc of
       0 -> do rowcount <- getSqlRowCount hStmt
-              return (True, fromIntegral rowcount)
+              return (True, Just $ fromIntegral rowcount)
       colcount -> do fgetcolinfo hStmt >>= swapMVar (colinfomv sstate)
-                     return (False, 0)
+                     return (False, Nothing)
   -- when finish $ ffinish sstate
   return result
 
@@ -317,8 +319,9 @@ getSqlRowCount cstmt = alloca $ \prows ->
         --note: As of ODBC-3.52, the row count is only a C int, ie 32bit.
 
 data BoundValue = BoundValue
+  { 
   -- | Type of the value in the buffer
-  { bvValueType         :: !(#{type SQLSMALLINT})
+    bvValueType         :: !(#{type SQLSMALLINT})
   -- | Type of the SQL value to use if ODBC driver doesn't report one
   , bvDefaultColumnType :: !(#{type SQLSMALLINT})
   , bvDefaultColumnSize :: !(#{type SQLULEN})
@@ -379,7 +382,7 @@ bindSqlValue sqlValue = case sqlValue of
           }
     hdbcTrace $ "bind SqlByteString " ++ show bs ++ ": " ++ show result
     return $! result
-  -- | This is rather hacky, I just replicate the behaviour of a previous version
+  -- This is rather hacky, I just replicate the behaviour of a previous version
   x -> do
     hdbcTrace $ "bind other " ++ show x
     bsResult <- bindSqlValue $ SqlByteString (fromSql x)
