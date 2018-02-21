@@ -11,7 +11,7 @@ data Connection =
                 disconnect :: IO (),
                 commit :: IO (),
                 rollback :: IO (),
-                run :: String -> [Types.SqlValue] -> IO Integer,
+                run :: String -> [Types.SqlValue] -> IO (Maybe Int),
                 prepare :: String -> IO Types.Statement,
                 clone :: IO Connection,
                 hdbcDriverName :: String,

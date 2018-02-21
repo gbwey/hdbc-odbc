@@ -148,8 +148,8 @@ fdescribetable iconn tablename = do
 
 {- For now, we try to just  handle things as simply as possible.
 FIXME lots of room for improvement here (types, etc). -}
--- need to make IO Integer (Maybe Integer) ie Nothing means select type
-fexecute :: SState -> [SqlValue] -> IO (Maybe Integer)
+-- need to make IO Integer (Maybe Int) ie Nothing means select type
+fexecute :: SState -> [SqlValue] -> IO (Maybe Int)
 fexecute sstate args = do
   hdbcTrace $ "fexecute: " ++ show (squery sstate) ++ show args
   (finish, result) <- withStmtOrDie (sstmt sstate) $ \hStmt -> do
@@ -181,7 +181,7 @@ fexecute sstate args = do
   -- when finish $ ffinish sstate
   return result
 
-fnextResultSet :: SState -> IO (Maybe Int)
+fnextResultSet :: SState -> IO (Maybe (Maybe Int))
 fnextResultSet sstate = do
   hdbcTrace $ "fnextResultSet: " ++ show (squery sstate)     
   withStmtOrDie (sstmt sstate) $ \hStmt -> do
@@ -207,9 +207,9 @@ fnextResultSet sstate = do
                                  case rc of
                                     0 -> do 
                                             rowcount <- getSqlRowCount hStmt
-                                            return (Just (fromIntegral rowcount))
+                                            return (Just $ Just (fromIntegral rowcount))
                                     colcount -> do fgetcolinfo hStmt >>= swapMVar (colinfomv sstate)
-                                                   return (Just 0)
+                                                   return (Just Nothing)
 
         #{const SQL_NO_DATA} -> return Nothing
         x -> checkError "fnextResultSet" (StmtHandle hStmt) x >> return Nothing
