@@ -2,10 +2,14 @@ resolver: lts-9.5
 #extra-deps:
 #  - HDBC-2.4.0.1
 packages:
-- location: '.'
+- '.'
 # - location: ../double-conversion
 #   extra-dep: true
 # - location: ../hdbc-odbc-41b25fcd8aad5c7e36cf780cb77d7e5b77b7062b
 #   extra-dep: true
-- location: ../hdbc_nextresult
+# - location: ../hdbc_nextresult
+#  extra-dep: true
+- location:
+    git: https://github.com/gbwey/hdbc
+    commit: 6191cd9605f243d587b97edaf0566095ed6ee4e2
   extra-dep: true
