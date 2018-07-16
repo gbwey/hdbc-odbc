@@ -12,4 +12,4 @@ hdbcLog _ = return ()
 
 hdbcTrace :: String -> IO ()
 hdbcTrace _ = return ()
--- hdbcTrace m = hPutStrLn stderr ("\n" ++ m)
+--hdbcTrace m = hPutStrLn stderr ("\n" ++ m)

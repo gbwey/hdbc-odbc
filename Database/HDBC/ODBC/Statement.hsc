@@ -3,12 +3,12 @@
 -- Above line for hugs
 {-# LANGUAGE EmptyDataDecls #-}
 
-module Database.HDBC.ODBC.Statement (
-   fGetQueryInfo,
-   newSth,
-   fgettables,
-   fdescribetable
- ) where
+module Database.HDBC.ODBC.Statement where -- (
+--   fGetQueryInfo,
+--   newSth,
+--   fgettables,
+--   fdescribetable
+-- ) where
 
 import Database.HDBC.Types
 import Database.HDBC

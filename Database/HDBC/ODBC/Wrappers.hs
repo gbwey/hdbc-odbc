@@ -2,7 +2,8 @@
     you from some memory (and threading) management.
 -}
 {-# LANGUAGE OverloadedStrings #-}
-module Database.HDBC.ODBC.Wrappers
+module Database.HDBC.ODBC.Wrappers where
+{-
   ( EnvWrapper (..)
   , sqlAllocEnv
   , withMaybeEnv
@@ -20,7 +21,7 @@ module Database.HDBC.ODBC.Wrappers
   , withStmtOrDie
   , freeStmtIfNotAlready
   ) where
-
+-}
 import Control.Monad (unless, void, when)
 import Control.Concurrent.MVar
 import Control.Concurrent.ReadWriteVar (RWVar)
