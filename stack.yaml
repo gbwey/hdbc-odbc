@@ -1,4 +1,4 @@
-resolver: lts-9.5
+resolver: lts-13.25
 #extra-deps:
 #  - HDBC-2.4.0.1
 packages:
