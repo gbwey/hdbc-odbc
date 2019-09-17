@@ -9,7 +9,10 @@ packages:
 #   extra-dep: true
 # - location: ../hdbc_nextresult
 #  extra-dep: true
-- location:
-    git: https://github.com/gbwey/hdbc
-    commit: 6191cd9605f243d587b97edaf0566095ed6ee4e2
+- location: ../hdbc
   extra-dep: true
+
+# - location:
+#     git: https://github.com/gbwey/hdbc
+#     commit: 6191cd9605f243d587b97edaf0566095ed6ee4e2
+#   extra-dep: true
