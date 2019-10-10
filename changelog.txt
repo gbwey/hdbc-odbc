@@ -1,3 +1,9 @@
+2.5.0.2 [gbwey]
+  * support multiple typed resultsets
+  * return the metadata in the execute method as we already have it
+  * use finalize instead of finish so we can work with streaming interfaces
+  * differentiate between update and select
+
 2.4.0.1 - 15 May 2015
 
   * Switched to using UTF-8 encoding for binding WCHAR_T values on Linux. Earlier version tried
