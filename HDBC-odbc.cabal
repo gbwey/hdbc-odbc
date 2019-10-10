@@ -24,19 +24,11 @@ description:
   MySQL databases from Haskell.
 stability:     Beta
 
-flag buildtests
-  description: Build the executable to run unit tests
-  default: False
-
-flag buildstresstest
-  description: Build the stress testing executable
-  default: False
-
 library
   exposed-modules:
       Database.HDBC.ODBC
     , Database.HDBC.ODBC.ConnectionImpl
-  other-modules:
+--  other-modules:
       Database.HDBC.ODBC.Api.Errors
     , Database.HDBC.ODBC.Api.Imports
     , Database.HDBC.ODBC.Api.Types
@@ -69,8 +61,7 @@ library
     extra-libraries: odbc, pthread
 
 executable runtests
-  if flag(buildtests)
-    buildable: True
+    buildable: False
     build-depends:
         base
       , HUnit
@@ -83,8 +74,6 @@ executable runtests
       , time
       , old-locale
       , convertible
-  else
-    buildable: False
   main-is: runtests.hs
   other-modules:
       SpecificDB
@@ -102,16 +91,13 @@ executable runtests
     , ScopedTypeVariables
 
 executable stresstest
-  if flag(buildstresstest)
-    buildable: True
+    buildable: False
     build-depends:
         base
       , HDBC
       , HDBC-odbc
       , random
       , resource-pool
-  else
-    buildable: False
   main-is: stresstest.hs
   hs-source-dirs: stresstest
   ghc-options: -threaded -rtsopts

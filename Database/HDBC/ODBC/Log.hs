@@ -8,8 +8,8 @@ import System.IO
 
 hdbcLog :: String -> IO ()
 hdbcLog _ = return ()
---hdbcLog m = hPutStrLn stderr ("\n" ++ m)
+-- hdbcLog m = hPutStrLn stderr ("\n" ++ m)
 
 hdbcTrace :: String -> IO ()
 hdbcTrace _ = return ()
---hdbcTrace m = hPutStrLn stderr ("\n" ++ m)
+-- hdbcTrace m = hPutStrLn stderr ("\n" ++ m)
